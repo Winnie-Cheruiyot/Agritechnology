@@ -1,6 +1,5 @@
-
 import { useState } from "react";
-import { Package, Camera, Calendar, DollarSign } from "lucide-react";
+import { Package, Camera, Calendar, DollarSign, X } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -19,11 +18,15 @@ const ProduceForm = () => {
     location: "",
   });
   
+  const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
+  const [previews, setPreviews] = useState<string[]>([]);
+  
   const { toast } = useToast();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Produce listed:", formData);
+    console.log("Uploaded files:", uploadedFiles);
     toast({
       title: "Produce Listed!",
       description: "Your produce has been successfully listed. Buyers will be notified.",
@@ -37,6 +40,8 @@ const ProduceForm = () => {
       description: "",
       location: "",
     });
+    setUploadedFiles([]);
+    setPreviews([]);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -44,6 +49,35 @@ const ProduceForm = () => {
       ...formData,
       [e.target.name]: e.target.value,
     });
+  };
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    
+    if (files.length > 0) {
+      const newFiles = [...uploadedFiles, ...files];
+      setUploadedFiles(newFiles);
+      
+      // Create preview URLs
+      const newPreviews = files.map(file => URL.createObjectURL(file));
+      setPreviews(prev => [...prev, ...newPreviews]);
+      
+      toast({
+        title: "Photos uploaded!",
+        description: `${files.length} photo(s) added successfully.`,
+      });
+    }
+  };
+
+  const removeFile = (index: number) => {
+    const newFiles = uploadedFiles.filter((_, i) => i !== index);
+    const newPreviews = previews.filter((_, i) => i !== index);
+    
+    // Revoke the object URL to free memory
+    URL.revokeObjectURL(previews[index]);
+    
+    setUploadedFiles(newFiles);
+    setPreviews(newPreviews);
   };
 
   return (
@@ -167,12 +201,54 @@ const ProduceForm = () => {
                 />
               </div>
 
-              <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
-                <Camera className="mx-auto text-gray-400 mb-4" size={48} />
-                <p className="text-gray-600">Upload photos of your produce</p>
-                <Button type="button" variant="outline" className="mt-2">
-                  Choose Files
-                </Button>
+              <div>
+                <Label>Upload Photos</Label>
+                <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
+                  <Camera className="mx-auto text-gray-400 mb-4" size={48} />
+                  <p className="text-gray-600 mb-4">Upload photos of your produce</p>
+                  <input
+                    type="file"
+                    multiple
+                    accept="image/*"
+                    onChange={handleFileUpload}
+                    className="hidden"
+                    id="file-upload"
+                  />
+                  <Button 
+                    type="button" 
+                    variant="outline" 
+                    onClick={() => document.getElementById('file-upload')?.click()}
+                  >
+                    Choose Files
+                  </Button>
+                </div>
+                
+                {/* Image Previews */}
+                {previews.length > 0 && (
+                  <div className="mt-4">
+                    <h4 className="text-sm font-medium text-gray-700 mb-2">
+                      Uploaded Photos ({previews.length})
+                    </h4>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                      {previews.map((preview, index) => (
+                        <div key={index} className="relative group">
+                          <img
+                            src={preview}
+                            alt={`Upload ${index + 1}`}
+                            className="w-full h-24 object-cover rounded-lg border"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => removeFile(index)}
+                            className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                          >
+                            <X size={14} />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
 
               <Button
