@@ -88,7 +88,7 @@ const ProduceForm = () => {
             List Your Produce
           </h2>
           <p className="text-xl text-gray-600">
-            Add your fresh produce to connect with buyers
+            Add your fresh produce to connect with buyers in Eldoret, Kenya
           </p>
         </div>
 
@@ -118,7 +118,7 @@ const ProduceForm = () => {
                   <Input
                     id="location"
                     name="location"
-                    placeholder="e.g., Green Valley Farm"
+                    placeholder="e.g., Eldoret Valley Farm"
                     value={formData.location}
                     onChange={handleChange}
                     required
@@ -155,18 +155,18 @@ const ProduceForm = () => {
                   </select>
                 </div>
                 <div>
-                  <Label htmlFor="price">Price per Unit ($)</Label>
+                  <Label htmlFor="price">Price per Unit (Kshs)</Label>
                   <div className="relative">
-                    <DollarSign className="absolute left-3 top-3 text-gray-400" size={16} />
+                    <span className="absolute left-3 top-3 text-gray-400 text-sm">Kshs</span>
                     <Input
                       id="price"
                       name="price"
                       type="number"
                       step="0.01"
-                      placeholder="3.50"
+                      placeholder="350"
                       value={formData.price}
                       onChange={handleChange}
-                      className="pl-10"
+                      className="pl-12"
                       required
                     />
                   </div>

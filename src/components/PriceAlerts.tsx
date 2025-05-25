@@ -9,37 +9,37 @@ const PriceAlerts = () => {
   const [alerts] = useState([
     {
       produce: "Tomatoes",
-      currentPrice: "$3.50/kg",
+      currentPrice: "Kshs 350/kg",
       change: "+15%",
       trend: "up",
-      market: "Central Market",
+      market: "Eldoret Central Market",
       distance: "5.2 km",
       urgent: true,
     },
     {
       produce: "Carrots",
-      currentPrice: "$2.80/kg",
+      currentPrice: "Kshs 280/kg",
       change: "-8%",
       trend: "down",
-      market: "Farmers Plaza",
+      market: "Eldoret Farmers Plaza",
       distance: "3.8 km",
       urgent: false,
     },
     {
       produce: "Lettuce",
-      currentPrice: "$4.20/kg",
+      currentPrice: "Kshs 420/kg",
       change: "+22%",
       trend: "up",
-      market: "Green Valley Market",
+      market: "West Pokot Market",
       distance: "7.1 km",
       urgent: true,
     },
     {
       produce: "Onions",
-      currentPrice: "$1.95/kg",
+      currentPrice: "Kshs 195/kg",
       change: "+5%",
       trend: "up",
-      market: "Local Co-op",
+      market: "Eldoret Local Co-op",
       distance: "2.3 km",
       urgent: false,
     },
@@ -50,10 +50,10 @@ const PriceAlerts = () => {
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            Live Market Prices
+            Live Market Prices - Eldoret, Kenya
           </h2>
           <p className="text-xl text-gray-600">
-            Stay updated with real-time pricing from nearby markets
+            Stay updated with real-time pricing from nearby markets in Eldoret
           </p>
         </div>
 
